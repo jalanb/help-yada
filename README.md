@@ -1,71 +1,33 @@
-# hype
-Expand help
+help-yada
+=========
 
-`hylp` is a command to help helps
+Expand `-h` on executables
 
-# git
+python
+------
 
-`hylp` is built on an idea from `git`:
+```shell
+$ echo > help_yada << EOP
+"""Expand -h from Python
 
-# git -h 
-A short option like `-h` shows CLI arguments
+Send 
+* `--help` to help/man page or -h
+* `--help-readme` to readme.* or None
+* `--help-license` to license* or None
+* `--help-tags` to StackOverflow
 
-     $ git status -h | sed -e"/^ *$/d" | head -n 4
-     usage: git status [<options>] [--] <pathspec>...
+"""
+import sys
 
-    -v, --verbose         be verbose
-    -s, --short           show status concisely
+from help_yada import ArgumentParser
+
+def parse_args():
+    lines = __doc__.splitlines()
+    head, tail = lines[0], lines[1:]
+    parser = ArgumentParser(head, help=tail)
+    parser.add_argument('Hello', help='World')
+    return parser.parse_args()
     
-## git --help
-A longer `--help` invokes `man` for more
-
-    $ git status --help | head -n 4
-    GIT-STATUS(1)         Git Manual   GIT-STATUS(1)
-
-    NAME
-       git-status - Show the working tree status
-       
-
-# fd
-`fd` offers more levels
-
-## fd -h
-A short option like `-h` shows CLI arguments
-
-    $ fd -h | head -n 6
-    fd 7.1.0
-    USAGE:
-        fd [FLAGS/OPTIONS] [<pattern>] [<path>...]
-    FLAGS:
-        -H, --hidden            Search hidden files and directories
-        -I, --no-ignore         Do not respect .(git|fd)ignore files
-
-## fd --help
-A longer `--help` show more detail on the args
-
-    $ fd --help | head -n 7
-    fd 7.1.0
-    USAGE:
-        fd [FLAGS/OPTIONS] [<pattern>] [<path>...]
-    FLAGS:
-        -H, --hidden
-                Include hidden directories and files in the search results (default: hidden files and directories are skipped).
-        -I, --no-ignore
-
-## help fd
-`man` and `info` are available
-
-    $ LINES=7 man fd
-    FD(1)
-    NAME
-           fd - find entries in the filesystem
-    SYNOPSIS
-           fd [-HIEsiaLp0hV] [-d depth] [-t filetype] [-e ext] [-E exclude] [-c when] [-j num] [-x cmd] [pattern] [path...]
-    DESCRIPTION
-           fd is a simple, fast and user-friendly alternative to find(1).
-
-    $ LINES=4 info fd
-    File: *manpages*,  Node: fd,  Up: (dir)
-    FD(1) 
-    NAME
-           fd - find entries in the filesystem
+if __name__ == '__main__':
+   parse_args()
+```
