@@ -1,3 +1,13 @@
+"""Expand -h from Python
+
+Send 
+* `--help` to help/man page or -h
+* `--help-readme` to readme.* or None
+* `--help-license` to license* or None
+* `--help-tags` to StackOverflow
+
+"""
+
 import sys
 
 from help_yada import ArgumentParser
